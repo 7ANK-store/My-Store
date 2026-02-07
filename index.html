@@ -20,28 +20,52 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
-                <img src="https://th.bing.com/th/id/R.8dad6244e676559a9c5b7ec8bed5b0ae?rik=zIlCNzMvUDJzLA&riu=http%3a%2f%2fwww.gianttiger.com%2fcdn%2fshop%2ffiles%2fpreview_images_768484_f_125_5280b43e-d11c-4b71-a0dd-094cefec0baa.jpg%3fv%3d1701610492&ehk=AHZ4qsPPLYxXbhZU2FkKDUzni9tYkdrw08U9Yp5XWIY%3d&risl=&pid=ImgRaw&r=0">
-                <h3 class="text-xl font-bold text-slate-800">Double Bubble 6pcs</h3>
-                <p class="text-blue-500 font-bold text-2xl mt-2">$2.99</p>
-                <a href="mailto:kevinthekingofcats@gmail.com?subject=Order: Gumballs Double Bubble&body=I want to pre-order Gumballs! %0D%0A%0D%0AMy Delivery Address: %0D%0APhone Number:" 
-   class="block mt-6 w-full bg-pink-500 text-center text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg border-b-4 border-pink-700">
-    Pre-order Now
-</a>
+           <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+    <img src="https://th.bing.com/th/id/R.8dad6244e676559a9c5b7ec8bed5b0ae?..." class="w-full h-64 object-contain rounded-xl mb-6">
+    
+    <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
+    <p class="text-pink-500 font-bold text-3xl mt-1">$5.00</p>
+
+    <div class="mt-4 flex items-center justify-center gap-3">
+        <label class="font-bold text-slate-600">QTY:</label>
+        <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-slate-200 rounded-lg text-center font-bold">
+    </div>
+    
+    <button onclick="sendOrder('Double Bubble', 'qty-double-bubble')" 
+       class="block mt-4 w-full bg-pink-500 text-center text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
+        Pre-order Now
+    </button>
+</div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
-                <img src="https://cdn.shopify.com/s/files/1/0250/7483/products/cry-baby-6-piece-tube-66g-candy-funhouse_800x.jpg?v=1644869532">
-                <h3 class="text-xl font-bold text-slate-800">Cry Baby 6pcs</h3>
-                <p class="text-blue-500 font-bold text-2xl mt-2">$2.99</p>
-               <a href="mailto:kevinthekingofcats@gmail.com?subject=Order: Gumballs Double Bubble&body=I want to pre-order Gumballs! %0D%0A%0D%0AMy Delivery Address: %0D%0APhone Number:" 
-        <a href="mailto:kevinthekingofcats@gmail.com?subject=Order: Cry Baby Gumballs" class="block mt-6 w-full bg-yellow-400 text-center text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
+           <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+    <img src="https://th.bing.com/th/id/OIP.iP-h6C7u-P_v0_N9K-mN7AHaHa?rs=1&pid=ImgRefX" class="w-full h-64 object-contain rounded-xl mb-6">
+    
+    <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
+    <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
+
+    <div class="mt-4 flex items-center justify-center gap-3">
+        <label class="font-black text-slate-600 uppercase text-sm">Quantity:</label>
+        <input type="number" id="qty-cry-baby" value="1" min="1" class="w-20 p-2 border-4 border-yellow-100 rounded-xl text-center font-black text-lg focus:border-yellow-500 outline-none">
+    </div>
+    
+    <button onclick="sendOrder('Cry Baby Gumballs', 'qty-cry-baby')" 
+       class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg border-b-4 border-yellow-600">
         Pre-order Now
-</a>
-            </div>
+    </button>
+</div>
 
         </div>
     </main>
-
+<script>
+function sendOrder(productName, inputId) {
+    const qty = document.getElementById(inputId).value;
+    const email = "kevinthekingofcats@gmail.com"; // <-- PUT YOUR EMAIL HERE
+    const subject = "Order: " + qty + " x " + productName;
+    const body = "I want to pre-order " + qty + " of the " + productName + " gumballs!";
+    
+    window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+}
+</script>
 </body>
 </html>
