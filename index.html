@@ -12,58 +12,53 @@
         <button class="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium">Cart (0)</button>
     </nav>
 
-    <main class="max-w-4xl mx-auto py-12 px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-black text-slate-800 uppercase tracking-tighter">New Arrivals</h2>
-            <p class="text-slate-500 mt-2 text-lg font-light">Freshly picked items just for you.</p>
-        </div>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
+            <div class="h-48 md:h-64 flex items-center justify-center mb-6">
+                <img src="https://www.sweet-station.com/cdn/shop/files/DubbleBubbleOriginalGumballs_1024x1024.jpg?v=1707255437" class="max-h-full object-contain">
+            </div>
             
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            <div class="flex-grow">
+                <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
+                <p class="text-pink-500 font-bold text-3xl mt-1">$2.99</p>
+            </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
-        <div class="h-64 flex items-center justify-center mb-6">
-            <img src="https://www.sweet-station.com/cdn/shop/files/DubbleBubbleOriginalGumballs_1024x1024.jpg?v=1707255437" class="max-h-full object-contain">
-        </div>
-        
-        <div class="flex-grow">
-            <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
-            <p class="text-pink-500 font-bold text-3xl mt-1">$2.99</p>
+            <div class="mt-4 flex items-center justify-center gap-3">
+                <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
+                <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black">
+            </div>
+            
+            <button onclick="sendOrder('Double Bubble', 'qty-double-bubble')" 
+               class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
+                Pre-order Now
+            </button>
         </div>
 
-        <div class="mt-4 flex items-center justify-center gap-3">
-            <label class="font-black text-slate-600 uppercase text-sm">Quantity:</label>
-            <input type="number" id="qty-double-bubble" value="1" min="1" class="w-20 p-2 border-4 border-pink-100 rounded-xl text-center font-black text-lg">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
+            <div class="h-48 md:h-64 flex items-center justify-center mb-6">
+                <img src="https://m.media-amazon.com/images/I/71R2oI1vjAL.jpg" class="max-h-full object-contain">
+            </div>
+            
+            <div class="flex-grow">
+                <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
+                <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
+            </div>
+
+            <div class="mt-4 flex items-center justify-center gap-3">
+                <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
+                <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black">
+            </div>
+            
+            <button onclick="sendOrder('Cry Baby Gumballs', 'qty-cry-baby')" 
+               class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
+                Pre-order Now
+            </button>
         </div>
-        
-        <button onclick="sendOrder('Double Bubble', 'qty-double-bubble')" 
-           class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
-            Pre-order Now
-        </button>
+
     </div>
-
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
-        <div class="h-64 flex items-center justify-center mb-6">
-            <img src="https://m.media-amazon.com/images/I/71R2oI1vjAL.jpg" class="max-h-full object-contain">
-        </div>
-        
-        <div class="flex-grow">
-            <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
-            <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
-        </div>
-
-        <div class="mt-4 flex items-center justify-center gap-3">
-            <label class="font-black text-slate-600 uppercase text-sm">Quantity:</label>
-            <input type="number" id="qty-cry-baby" value="1" min="1" class="w-20 p-2 border-4 border-yellow-100 rounded-xl text-center font-black text-lg">
-        </div>
-        
-        <button onclick="sendOrder('Cry Baby Gumballs', 'qty-cry-baby')" 
-           class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
-            Pre-order Now
-        </button>
-    </div>
-
+</div>
 </div>
         </div>
     </main>
