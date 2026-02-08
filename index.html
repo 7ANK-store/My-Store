@@ -35,13 +35,13 @@
                 </div>
                 <div class="flex-grow">
                     <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
-                    <p class="text-pink-500 font-bold text-3xl mt-1">$2.99</p>
+                    <p class="text-pink-500 font-bold text-3xl mt-1">$3.00</p>
                 </div>
                 <div class="mt-4 flex items-center justify-center gap-3">
                     <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
                     <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black outline-none">
                 </div>
-                <button onclick="addToCart('Double Bubble', 'qty-double-bubble', 2.99)" 
+                <button onclick="addToCart('Double Bubble', 'qty-double-bubble', 3)" 
                    class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg border-b-4 border-pink-700 active:border-b-0 active:translate-y-1">
                     Add to Cart
                 </button>
@@ -53,13 +53,13 @@
                 </div>
                 <div class="flex-grow">
                     <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
-                    <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
+                    <p class="text-yellow-500 font-bold text-3xl mt-1">$3.00</p>
                 </div>
                 <div class="mt-4 flex items-center justify-center gap-3">
                     <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
                     <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black outline-none">
                 </div>
-                <button onclick="addToCart('Cry Baby', 'qty-cry-baby', 2.99)" 
+                <button onclick="addToCart('Cry Baby', 'qty-cry-baby', 3)" 
                    class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg border-b-4 border-yellow-600 active:border-b-0 active:translate-y-1">
                     Add to Cart
                 </button>
@@ -74,12 +74,13 @@
             <div class="border-t-2 border-dashed pt-4 mb-8 space-y-2">
                 <div class="flex justify-between items-center text-xl font-black text-slate-900 uppercase">
                     <span>Total Price:</span>
-                    <span id="total-price-display">$0.00</span>
+                    <span id="total-price-display">$0</span>
                 </div>
             </div>
 
-            <div class="bg-green-50 p-4 rounded-2xl mb-8 border border-green-100">
-                <p class="text-green-800 font-black uppercase text-xs tracking-widest mb-1 text-center">💵 Cash on Delivery</p>
+            <div class="bg-green-50 p-4 rounded-2xl mb-8 border border-green-100 text-center">
+                <p class="text-green-800 font-black uppercase text-xs tracking-widest mb-1 italic">Payment Method:</p>
+                <p class="text-green-700 font-black text-xl uppercase tracking-tighter">💵 Cash on Delivery</p>
             </div>
 
             <button onclick="sendFinalEmail()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-blue-700 transition-all shadow-xl">
@@ -105,7 +106,6 @@ function addToCart(name, inputId, itemPrice) {
     if (existingItem) {
         existingItem.qty += qty;
     } else {
-        // We lock the price as a Number here
         cart.push({ name: name, qty: qty, price: Number(itemPrice) });
     }
     
@@ -129,7 +129,6 @@ function updateCartUI() {
         list.innerHTML = "";
 
         cart.forEach(item => {
-            // FIX: Math is done inside the loop correctly
             const itemTotal = item.qty * item.price;
             totalGumballs += item.qty;
             grandTotal += itemTotal;
@@ -142,13 +141,13 @@ function updateCartUI() {
                         <p class="font-black text-slate-800 uppercase text-xs">${item.name}</p>
                         <p class="font-bold ${itemColor} text-lg">x${item.qty}</p>
                     </div>
-                    <span class="font-black text-slate-900">$${itemTotal.toFixed(2)}</span>
+                    <span class="font-black text-slate-900">$${itemTotal}</span>
                 </div>
             `;
         });
 
         floatingQty.innerText = totalGumballs;
-        totalPriceDisplay.innerText = "$" + grandTotal.toFixed(2);
+        totalPriceDisplay.innerText = "$" + grandTotal;
     } else {
         overview.classList.add('hidden');
         floatingBtn.classList.add('hidden');
@@ -175,19 +174,18 @@ function sendFinalEmail() {
         const itemTotal = item.qty * item.price;
         totalCount += item.qty;
         grandTotal += itemTotal;
-        summary += "• " + item.qty + " x " + item.name + " ($" + itemTotal.toFixed(2) + ")%0D%0A";
+        summary += "• " + item.qty + " x " + item.name + " ($" + itemTotal + ")%0D%0A";
     });
 
-    const finalPrice = grandTotal.toFixed(2);
     summary += "%0D%0A--------------------------";
-    summary += "%0D%0ATOTAL DUE: $" + finalPrice;
+    summary += "%0D%0ATOTAL DUE: $" + grandTotal;
     summary += "%0D%0APAYMENT: Cash on Delivery"; 
     summary += "%0D%0A--------------------------";
     summary += "%0D%0APlease include your Name and Delivery Details below:%0D%0A";
 
     const mainEmail = "kevinthekingofcats@gmail.com";
-    const secondEmail = "SECOND_EMAIL@example.com"; // <-- PUT SECOND EMAIL HERE
-    const subject = "Pre-order for " + totalCount + " Gumballs ($" + finalPrice + ")";
+    const secondEmail = "SECOND_EMAIL@example.com"; 
+    const subject = "Pre-order for " + totalCount + " Gumballs ($" + grandTotal + ")";
     
     window.location.href = "mailto:" + mainEmail + "?cc=" + secondEmail + "&subject=" + encodeURIComponent(subject) + "&body=" + summary;
 }
