@@ -69,9 +69,14 @@
         <div id="cart-overview" class="hidden max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-50">
             <h2 class="text-2xl font-black text-slate-800 uppercase italic mb-6 text-center">🛒 Order Summary</h2>
             
+            <div class="mb-6">
+                <label class="block text-xs font-black uppercase text-slate-500 mb-2 tracking-widest">Enter Your Name:</label>
+                <input type="text" id="customer-name" placeholder="Full Name" class="w-full p-4 bg-slate-50 border-2 border-blue-100 rounded-2xl font-bold text-slate-800 focus:border-blue-500 outline-none transition">
+            </div>
+
             <div id="cart-items-list" class="space-y-4 mb-8"></div>
 
-            <div class="border-t-2 border-dashed pt-4 mb-8 space-y-2">
+            <div class="border-t-2 border-dashed pt-4 mb-4 space-y-2">
                 <div class="flex justify-between items-center text-xl font-black text-slate-900 uppercase">
                     <span>Total Price:</span>
                     <span id="total-price-display">$0</span>
@@ -132,7 +137,6 @@ function updateCartUI() {
             const itemTotal = item.qty * item.price;
             totalGumballs += item.qty;
             grandTotal += itemTotal;
-
             const itemColor = item.name.includes('Double') ? 'text-pink-500' : 'text-yellow-600';
             
             list.innerHTML += `
@@ -166,9 +170,17 @@ function clearCart() {
 }
 
 function sendFinalEmail() {
+    const customerName = document.getElementById('customer-name').value;
+    
+    // Alert if they forgot to type their name
+    if (!customerName) {
+        alert("Please enter your name before ordering!");
+        return;
+    }
+
     let totalCount = 0;
     let grandTotal = 0;
-    let summary = "New Pre-order Details:%0D%0A";
+    let summary = "Customer Name: " + customerName + "%0D%0A%0D%0AOrder Details:%0D%0A";
 
     cart.forEach(item => {
         const itemTotal = item.qty * item.price;
@@ -181,11 +193,10 @@ function sendFinalEmail() {
     summary += "%0D%0ATOTAL DUE: $" + grandTotal;
     summary += "%0D%0APAYMENT: Cash on Delivery"; 
     summary += "%0D%0A--------------------------";
-    summary += "%0D%0APlease include your Name and Delivery Details below:%0D%0A";
 
     const mainEmail = "kevinthekingofcats@gmail.com";
     const secondEmail = "elias.hirani@student.tdsb.on.ca"; 
-    const subject = "Pre-order for " + totalCount + " Gumballs ($" + grandTotal + ")";
+    const subject = "Pre-order from " + customerName + " ($" + grandTotal + ")";
     
     window.location.href = "mailto:" + mainEmail + "?cc=" + secondEmail + "&subject=" + encodeURIComponent(subject) + "&body=" + summary;
 }
