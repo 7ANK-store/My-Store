@@ -2,80 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Super Store</title>
+    <title>Elias's Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50">
 
-    <nav class="bg-white border-b p-6 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-600">⚡ ELIAS'S STORE</h1>
-         <button id="cart-btn" onclick="openCart()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium fixed top-4 right-4 z-50">
-    Cart (0)
-</button>
-    
-  <div class="max-w-4xl mx-auto px-4 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+    <nav class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold text-blue-600 uppercase">⚡ Elias's Store</h1>
+        <button id="cart-btn" onclick="openCart()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-black uppercase tracking-tight shadow-md hover:bg-blue-700 transition">
+            Cart (0)
+        </button>
+    </nav>
 
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
-            <div class="h-48 md:h-64 flex items-center justify-center mb-6">
-                <img src="https://i5.walmartimages.com/asr/4f76548d-51df-458c-b27e-e5ca49034d05.21645910736e42ddff01b5f3de982280.jpeg?odnHeight=450&odnWidth=450&odnBg=ffffff">
-            </div>
-            
-            <div class="flex-grow">
-                <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
-                <p class="text-pink-500 font-bold text-3xl mt-1">$2.99</p>
-            </div>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
 
-            <div class="mt-4 flex items-center justify-center gap-3">
-                <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
-                <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black">
-            </div>
-            
-            <button onclick="sendOrder('Double Bubble', 'qty-double-bubble')" 
-               class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
+                <div class="h-48 md:h-64 flex items-center justify-center mb-6">
+                    <img src="https://i5.walmartimages.com/asr/4f76548d-51df-458c-b27e-e5ca49034d05.21645910736e42ddff01b5f3de982280.jpeg?odnHeight=450&odnWidth=450&odnBg=ffffff" class="max-h-full object-contain">
+                </div>
+                
+                <div class="flex-grow">
+                    <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
+                    <p class="text-pink-500 font-bold text-3xl mt-1">$2.99</p>
+                </div>
+
+                <div class="mt-4 flex items-center justify-center gap-3">
+                    <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
+                    <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black">
+                </div>
+                
                 <button onclick="addToCart('Double Bubble', 'qty-double-bubble')" 
-   class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
-    Add to Cart
-</button>
-            </button>
+                   class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
+                <div class="h-48 md:h-64 flex items-center justify-center mb-6">
+                    <img src="https://cdn.shopify.com/s/files/1/0250/7483/products/cry-baby-6-piece-tube-66g-candy-funhouse_800x.jpg?v=1644869532" class="max-h-full object-contain">
+                </div>
+                
+                <div class="flex-grow">
+                    <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
+                    <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
+                </div>
+
+                <div class="mt-4 flex items-center justify-center gap-3">
+                    <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
+                    <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black">
+                </div>
+                
+                <button onclick="addToCart('Cry Baby', 'qty-cry-baby')" 
+                   class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
+                    Add to Cart
+                </button>
+            </div>
+
         </div>
-
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
-            <div class="h-48 md:h-64 flex items-center justify-center mb-6">
-                <img src="https://cdn.shopify.com/s/files/1/0250/7483/products/cry-baby-6-piece-tube-66g-candy-funhouse_800x.jpg?v=1644869532" class="max-h-full object-contain">
-            </div>
-            
-            <div class="flex-grow">
-                <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
-                <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
-            </div>
-
-            <div class="mt-4 flex items-center justify-center gap-3">
-                <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
-                <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black">
-            </div>
-            
-            <button onclick="sendOrder('Cry Baby Gumballs', 'qty-cry-baby')" 
-               class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
-               <button onclick="addToCart('Cry Baby', 'qty-cry-baby')" 
-   class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
-    Add to Cart
-</button>
-            </button>
-        </div>
-
     </div>
-</div>
-</div>
-        </div>
-    </main>
+
 <script>
 let cart = [];
 
 function addToCart(name, inputId) {
-    const qty = parseInt(document.getElementById(inputId).value);
+    const qtyInput = document.getElementById(inputId);
+    const qty = parseInt(qtyInput.value);
     
-    // Check if we already have this item in the cart
+    if (qty <= 0 || isNaN(qty)) return;
+
     const existingItem = cart.find(item => item.name === name);
     if (existingItem) {
         existingItem.qty += qty;
@@ -83,11 +78,14 @@ function addToCart(name, inputId) {
         cart.push({ name: name, qty: qty });
     }
     
-    // Calculate total gumballs for the button display
+    updateCartUI();
+    alert(qty + " " + name + " added to cart!");
+    qtyInput.value = 1; // Resets box to 1 after adding
+}
+
+function updateCartUI() {
     const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
     document.getElementById('cart-btn').innerText = "Cart (" + totalGumballs + ")";
-    
-    alert(qty + " " + name + " added to cart!");
 }
 
 function openCart() {
@@ -96,10 +94,7 @@ function openCart() {
         return;
     }
 
-    // Calculate total count for the pop-up message
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-
-    // Build the list for the email
     let summary = "New Pre-order Details:%0D%0A";
     cart.forEach(item => {
         summary += "• " + item.qty + " x " + item.name + "%0D%0A";
@@ -113,5 +108,6 @@ function openCart() {
     }
 }
 </script>
+
 </body>
 </html>
