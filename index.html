@@ -184,7 +184,7 @@ function sendFinalEmail() {
     summary += "%0D%0APlease include your Name and Delivery Details below:%0D%0A";
 
     const mainEmail = "kevinthekingofcats@gmail.com";
-    const secondEmail = "SECOND_EMAIL@example.com"; 
+    const secondEmail = "elias.hirani@student.tdsb.on.ca"; 
     const subject = "Pre-order for " + totalCount + " Gumballs ($" + grandTotal + ")";
     
     window.location.href = "mailto:" + mainEmail + "?cc=" + secondEmail + "&subject=" + encodeURIComponent(subject) + "&body=" + summary;
