@@ -5,62 +5,62 @@
     <title>Elias's Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* This makes the scroll feel smooth and professional */
         html { scroll-behavior: smooth; }
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0) scale(1.1); }
+            50% { transform: translateY(-5px) scale(1.1); }
+        }
+        .animate-bounce-subtle {
+            animation: bounce-subtle 2s infinite;
+        }
     </style>
 </head>
 <body class="bg-slate-50 pb-32">
 
-    <button id="floating-cart" onclick="scrollToCart()" class="hidden fixed bottom-6 right-6 z-50 bg-blue-600 text-white px-6 py-4 rounded-full font-black uppercase tracking-widest shadow-2xl hover:bg-blue-700 transition-all transform hover:scale-110 flex items-center gap-2">
+    <button id="floating-cart" onclick="scrollToCart()" class="hidden fixed bottom-6 right-6 z-50 bg-blue-600 text-white px-6 py-4 rounded-full font-black uppercase tracking-widest shadow-2xl hover:bg-blue-700 transition-all transform scale-110 animate-bounce-subtle flex items-center gap-2">
         <span>View Cart</span>
         <span id="floating-qty" class="bg-white text-blue-600 px-2 py-0.5 rounded-md text-sm">0</span>
     </button>
 
     <nav class="bg-white border-b p-6 flex justify-center items-center sticky top-0 z-50">
-        <h1 class="text-2xl font-bold text-blue-600 uppercase">⚡ Elias's Store</h1>
+        <h1 class="text-2xl font-bold text-blue-600 uppercase tracking-tighter">⚡ Elias's Store</h1>
     </nav>
 
     <div class="max-w-4xl mx-auto px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-24">
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 text-center flex flex-col h-full transition hover:shadow-md">
                 <div class="h-48 md:h-64 flex items-center justify-center mb-6">
                     <img src="https://i5.walmartimages.com/asr/4f76548d-51df-458c-b27e-e5ca49034d05.21645910736e42ddff01b5f3de982280.jpeg?odnHeight=450&odnWidth=450&odnBg=ffffff" class="max-h-full object-contain">
                 </div>
-                
                 <div class="flex-grow">
                     <h3 class="text-2xl font-black text-slate-800 uppercase italic">Gumballs Double Bubble</h3>
                     <p class="text-pink-500 font-bold text-3xl mt-1">$2.99</p>
                 </div>
-
                 <div class="mt-4 flex items-center justify-center gap-3">
                     <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
                     <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black">
                 </div>
-                
-                <button onclick="addToCart('Double Bubble', 'qty-double-bubble')" 
-                   class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
+                <button onclick="addToCart('Double Bubble', 'qty-double-bubble', 2.99)" 
+                   class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg border-b-4 border-pink-700 active:border-b-0 active:translate-y-1">
                     Add to Cart
                 </button>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 text-center flex flex-col h-full transition hover:shadow-md">
                 <div class="h-48 md:h-64 flex items-center justify-center mb-6">
                     <img src="https://cdn.shopify.com/s/files/1/0250/7483/products/cry-baby-6-piece-tube-66g-candy-funhouse_800x.jpg?v=1644869532" class="max-h-full object-contain">
                 </div>
-                
                 <div class="flex-grow">
                     <h3 class="text-2xl font-black text-slate-800 uppercase italic">Cry Baby Gumballs</h3>
                     <p class="text-yellow-500 font-bold text-3xl mt-1">$2.99</p>
                 </div>
-
                 <div class="mt-4 flex items-center justify-center gap-3">
                     <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
                     <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black">
                 </div>
-                
-                <button onclick="addToCart('Cry Baby', 'qty-cry-baby')" 
-                   class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
+                <button onclick="addToCart('Cry Baby', 'qty-cry-baby', 2.99)" 
+                   class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg border-b-4 border-yellow-600 active:border-b-0 active:translate-y-1">
                     Add to Cart
                 </button>
             </div>
@@ -69,13 +69,16 @@
         <div id="cart-overview" class="hidden max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-50">
             <h2 class="text-2xl font-black text-slate-800 uppercase italic mb-6 text-center">🛒 Order Summary</h2>
             
-            <div id="cart-items-list" class="space-y-4 mb-8">
-                </div>
+            <div id="cart-items-list" class="space-y-4 mb-8"></div>
 
-            <div class="border-t-2 border-dashed pt-4 mb-8">
-                <div class="flex justify-between items-center text-xl font-black text-slate-900 uppercase">
+            <div class="border-t-2 border-dashed pt-4 mb-8 space-y-2">
+                <div class="flex justify-between items-center text-sm font-bold text-slate-500 uppercase">
                     <span>Total Items:</span>
                     <span id="total-qty-display">0</span>
+                </div>
+                <div class="flex justify-between items-center text-2xl font-black text-slate-900 uppercase">
+                    <span>Total Price:</span>
+                    <span id="total-price-display">$0.00</span>
                 </div>
             </div>
 
@@ -92,19 +95,17 @@
 <script>
 let cart = [];
 
-function addToCart(name, inputId) {
+function addToCart(name, inputId, price) {
     const qtyInput = document.getElementById(inputId);
     const qty = parseInt(qtyInput.value);
-    
     if (qty <= 0 || isNaN(qty)) return;
 
     const existingItem = cart.find(item => item.name === name);
     if (existingItem) {
         existingItem.qty += qty;
     } else {
-        cart.push({ name: name, qty: qty });
+        cart.push({ name: name, qty: qty, price: price });
     }
-    
     updateCartUI();
     qtyInput.value = 1; 
 }
@@ -114,22 +115,30 @@ function updateCartUI() {
     const floatingBtn = document.getElementById('floating-cart');
     const floatingQty = document.getElementById('floating-qty');
     const list = document.getElementById('cart-items-list');
-    const totalDisplay = document.getElementById('total-qty-display');
+    const totalQtyDisplay = document.getElementById('total-qty-display');
+    const totalPriceDisplay = document.getElementById('total-price-display');
+
     const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + (item.qty * item.price), 0);
 
     if (cart.length > 0) {
         overview.classList.remove('hidden');
-        floatingBtn.classList.remove('hidden'); // Show floating button
+        floatingBtn.classList.remove('hidden'); 
         floatingQty.innerText = totalGumballs;
-        totalDisplay.innerText = totalGumballs;
+        totalQtyDisplay.innerText = totalGumballs;
+        totalPriceDisplay.innerText = "$" + totalPrice.toFixed(2);
+        
         list.innerHTML = "";
-
         cart.forEach(item => {
             const itemColor = item.name.includes('Double') ? 'text-pink-500' : 'text-yellow-600';
+            const itemTotal = (item.qty * item.price).toFixed(2);
             list.innerHTML += `
                 <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <span class="font-black text-slate-800 uppercase text-sm">${item.name}</span>
-                    <span class="font-black ${itemColor} text-lg">x${item.qty}</span>
+                    <div>
+                        <p class="font-black text-slate-800 uppercase text-xs">${item.name}</p>
+                        <p class="font-bold ${itemColor} text-lg">x${item.qty}</p>
+                    </div>
+                    <span class="font-black text-slate-900">$${itemTotal}</span>
                 </div>
             `;
         });
@@ -152,13 +161,16 @@ function clearCart() {
 
 function sendFinalEmail() {
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + (item.qty * item.price), 0).toFixed(2);
+    
     let summary = "New Pre-order Details:%0D%0A";
     cart.forEach(item => {
-        summary += "• " + item.qty + " x " + item.name + "%0D%0A";
+        summary += "• " + item.qty + " x " + item.name + " ($" + (item.qty * item.price).toFixed(2) + ")%0D%0A";
     });
+    summary += "%0D%0ATOTAL DUE: $" + totalPrice;
 
     const email = "kevinthekingofcats@gmail.com";
-    const subject = "Pre-order for " + totalCount + " Gumballs";
+    const subject = "Pre-order for " + totalCount + " Gumballs ($" + totalPrice + ")";
     
     window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + summary;
 }
