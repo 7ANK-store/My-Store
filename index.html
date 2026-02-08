@@ -9,9 +9,10 @@
 
     <nav class="bg-white border-b p-6 flex justify-between items-center">
         <h1 class="text-2xl font-bold text-blue-600">⚡ ELIAS'S STORE</h1>
-        <button class="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium">Cart (0)</button>
-    </nav>
-
+         <button id="cart-btn" onclick="openCart()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium fixed top-4 right-4 z-50">
+    Cart (0)
+</button>
+    
   <div class="max-w-4xl mx-auto px-4 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
 
@@ -32,7 +33,10 @@
             
             <button onclick="sendOrder('Double Bubble', 'qty-double-bubble')" 
                class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
-                Pre-order Now
+                <button onclick="addToCart('Double Bubble', 'qty-double-bubble')" 
+   class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg">
+    Add to Cart
+</button>
             </button>
         </div>
 
@@ -53,7 +57,10 @@
             
             <button onclick="sendOrder('Cry Baby Gumballs', 'qty-cry-baby')" 
                class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
-                Pre-order Now
+               <button onclick="addToCart('Cry Baby', 'qty-cry-baby')" 
+   class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg">
+    Add to Cart
+</button>
             </button>
         </div>
 
@@ -63,13 +70,37 @@
         </div>
     </main>
 <script>
-function sendOrder(productName, inputId) {
-    const qty = document.getElementById(inputId).value;
-    const email = "kevinthekingofcats@gmail.com"; // <-- PUT YOUR EMAIL HERE
-    const subject = "Order: " + qty + " x " + productName;
-    const body = "I want to pre-order " + qty + " of the " + productName + " gumballs!";
+let cart = [];
+
+function addToCart(name, inputId) {
+    const qty = parseInt(document.getElementById(inputId).value);
+    cart.push({ name: name, qty: qty });
     
-    window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    // Update the button text to show items
+    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('cart-btn').innerText = "Cart (" + totalItems + ")";
+    
+    alert(qty + " " + name + " added to cart!");
+}
+
+function openCart() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    // Build the email summary
+    let summary = "I want to pre-order:%0D%0A";
+    cart.forEach(item => {
+        summary += "- " + item.qty + " x " + item.name + "%0D%0A";
+    });
+
+    const email = "kevinthekingofcats@gmail.com";
+    const subject = "New Multi-Item Pre-order";
+    
+    if(confirm("Ready to send your pre-order for " + cart.length + " items?")) {
+        window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + summary;
+    }
 }
 </script>
 </body>
