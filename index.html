@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <title>Elias's Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* This makes the scroll feel smooth and professional */
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
-<body class="bg-slate-50 pb-20"> <nav class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-50">
+<body class="bg-slate-50 pb-32">
+
+    <button id="floating-cart" onclick="scrollToCart()" class="hidden fixed bottom-6 right-6 z-50 bg-blue-600 text-white px-6 py-4 rounded-full font-black uppercase tracking-widest shadow-2xl hover:bg-blue-700 transition-all transform hover:scale-110 flex items-center gap-2">
+        <span>View Cart</span>
+        <span id="floating-qty" class="bg-white text-blue-600 px-2 py-0.5 rounded-md text-sm">0</span>
+    </button>
+
+    <nav class="bg-white border-b p-6 flex justify-center items-center sticky top-0 z-50">
         <h1 class="text-2xl font-bold text-blue-600 uppercase">⚡ Elias's Store</h1>
-        <button id="cart-btn" onclick="scrollToCart()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-black uppercase tracking-tight shadow-md hover:bg-blue-700 transition">
-            Cart (0)
-        </button>
     </nav>
 
     <div class="max-w-4xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-24">
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
                 <div class="h-48 md:h-64 flex items-center justify-center mb-6">
@@ -59,7 +67,7 @@
         </div>
 
         <div id="cart-overview" class="hidden max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-50">
-            <h2 class="text-2xl font-black text-slate-800 uppercase italic mb-6 text-center">🛒 Order Overview</h2>
+            <h2 class="text-2xl font-black text-slate-800 uppercase italic mb-6 text-center">🛒 Order Summary</h2>
             
             <div id="cart-items-list" class="space-y-4 mb-8">
                 </div>
@@ -71,12 +79,12 @@
                 </div>
             </div>
 
-            <button onclick="openCart()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-xl">
+            <button onclick="sendFinalEmail()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-blue-700 transition-all shadow-xl">
                 Pre-order Now
             </button>
             
             <button onclick="clearCart()" class="w-full mt-4 text-slate-400 font-bold uppercase text-xs tracking-widest hover:text-red-500">
-                Clear Cart
+                Reset My Order
             </button>
         </div>
     </div>
@@ -102,17 +110,19 @@ function addToCart(name, inputId) {
 }
 
 function updateCartUI() {
-    const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
-    document.getElementById('cart-btn').innerText = "Cart (" + totalGumballs + ")";
-    
     const overview = document.getElementById('cart-overview');
+    const floatingBtn = document.getElementById('floating-cart');
+    const floatingQty = document.getElementById('floating-qty');
     const list = document.getElementById('cart-items-list');
     const totalDisplay = document.getElementById('total-qty-display');
+    const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
 
     if (cart.length > 0) {
         overview.classList.remove('hidden');
+        floatingBtn.classList.remove('hidden'); // Show floating button
+        floatingQty.innerText = totalGumballs;
         totalDisplay.innerText = totalGumballs;
-        list.innerHTML = ""; // Clear current list
+        list.innerHTML = "";
 
         cart.forEach(item => {
             const itemColor = item.name.includes('Double') ? 'text-pink-500' : 'text-yellow-600';
@@ -125,6 +135,7 @@ function updateCartUI() {
         });
     } else {
         overview.classList.add('hidden');
+        floatingBtn.classList.add('hidden');
     }
 }
 
@@ -139,9 +150,7 @@ function clearCart() {
     }
 }
 
-function openCart() {
-    if (cart.length === 0) return;
-
+function sendFinalEmail() {
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
     let summary = "New Pre-order Details:%0D%0A";
     cart.forEach(item => {
