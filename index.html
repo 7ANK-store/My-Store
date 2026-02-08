@@ -167,14 +167,20 @@ function sendFinalEmail() {
     cart.forEach(item => {
         summary += "• " + item.qty + " x " + item.name + " ($" + (item.qty * item.price).toFixed(2) + ")%0D%0A";
     });
+    
+    summary += "%0D%0A--------------------------";
     summary += "%0D%0ATOTAL DUE: $" + totalPrice;
+    summary += "%0D%0APAYMENT: Cash on Delivery"; 
+    summary += "%0D%0A--------------------------";
+    summary += "%0D%0APlease include your Name below:%0D%0A";
 
-    const email = "kevinthekingofcats@gmail.com";
+    const mainEmail = "kevinthekingofcats@gmail.com";
+    const secondEmail = "elias.hirani@student.tdsb.on.ca"; // <-- PUT THE SECOND EMAIL HERE
     const subject = "Pre-order for " + totalCount + " Gumballs ($" + totalPrice + ")";
     
-    window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + summary;
+    // This line tells the computer to send to both people
+    window.location.href = "mailto:" + mainEmail + "?cc=" + secondEmail + "&subject=" + encodeURIComponent(subject) + "&body=" + summary;
 }
-</script>
 
 </body>
 </html>
