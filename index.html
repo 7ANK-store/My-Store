@@ -74,11 +74,18 @@ let cart = [];
 
 function addToCart(name, inputId) {
     const qty = parseInt(document.getElementById(inputId).value);
-    cart.push({ name: name, qty: qty });
     
-    // Update the button text to show items
-    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-    document.getElementById('cart-btn').innerText = "Cart (" + totalItems + ")";
+    // Check if we already have this item in the cart
+    const existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.qty += qty;
+    } else {
+        cart.push({ name: name, qty: qty });
+    }
+    
+    // Calculate total gumballs for the button display
+    const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('cart-btn').innerText = "Cart (" + totalGumballs + ")";
     
     alert(qty + " " + name + " added to cart!");
 }
@@ -89,17 +96,20 @@ function openCart() {
         return;
     }
 
-    // Build the email summary
-    let summary = "I want to pre-order:%0D%0A";
+    // Calculate total count for the pop-up message
+    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+
+    // Build the list for the email
+    let summary = "New Pre-order Details:%0D%0A";
     cart.forEach(item => {
-        summary += "- " + item.qty + " x " + item.name + "%0D%0A";
+        summary += "• " + item.qty + " x " + item.name + "%0D%0A";
     });
 
     const email = "kevinthekingofcats@gmail.com";
-    const subject = "New Multi-Item Pre-order";
+    const subject = "Pre-order for " + totalCount + " Gumballs";
     
-    if(confirm("Ready to send your pre-order for " + cart.length + " items?")) {
-        window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + summary;
+    if(confirm("Ready to send your pre-order for " + totalCount + " total gumballs?")) {
+        window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + summary;
     }
 }
 </script>
