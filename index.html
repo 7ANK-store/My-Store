@@ -39,7 +39,7 @@
                 </div>
                 <div class="mt-4 flex items-center justify-center gap-3">
                     <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
-                    <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black">
+                    <input type="number" id="qty-double-bubble" value="1" min="1" class="w-16 p-2 border-2 border-pink-100 rounded-xl text-center font-black outline-none">
                 </div>
                 <button onclick="addToCart('Double Bubble', 'qty-double-bubble', 2.99)" 
                    class="mt-6 w-full bg-pink-500 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-pink-600 transition shadow-lg border-b-4 border-pink-700 active:border-b-0 active:translate-y-1">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="mt-4 flex items-center justify-center gap-3">
                     <label class="font-black text-slate-600 uppercase text-sm">Qty:</label>
-                    <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black">
+                    <input type="number" id="qty-cry-baby" value="1" min="1" class="w-16 p-2 border-2 border-yellow-100 rounded-xl text-center font-black outline-none">
                 </div>
                 <button onclick="addToCart('Cry Baby', 'qty-cry-baby', 2.99)" 
                    class="mt-6 w-full bg-yellow-400 text-slate-900 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg border-b-4 border-yellow-600 active:border-b-0 active:translate-y-1">
@@ -72,14 +72,14 @@
             <div id="cart-items-list" class="space-y-4 mb-8"></div>
 
             <div class="border-t-2 border-dashed pt-4 mb-8 space-y-2">
-                <div class="flex justify-between items-center text-sm font-bold text-slate-500 uppercase">
-                    <span>Total Items:</span>
-                    <span id="total-qty-display">0</span>
-                </div>
-                <div class="flex justify-between items-center text-2xl font-black text-slate-900 uppercase">
+                <div class="flex justify-between items-center text-xl font-black text-slate-900 uppercase">
                     <span>Total Price:</span>
                     <span id="total-price-display">$0.00</span>
                 </div>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-2xl mb-8 border border-green-100">
+                <p class="text-green-800 font-black uppercase text-xs tracking-widest mb-1 text-center">💵 Cash on Delivery</p>
             </div>
 
             <button onclick="sendFinalEmail()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-blue-700 transition-all shadow-xl">
@@ -95,17 +95,20 @@
 <script>
 let cart = [];
 
-function addToCart(name, inputId, price) {
+function addToCart(name, inputId, itemPrice) {
     const qtyInput = document.getElementById(inputId);
     const qty = parseInt(qtyInput.value);
+    
     if (qty <= 0 || isNaN(qty)) return;
 
     const existingItem = cart.find(item => item.name === name);
     if (existingItem) {
         existingItem.qty += qty;
     } else {
-        cart.push({ name: name, qty: qty, price: price });
+        // We lock the price as a Number here
+        cart.push({ name: name, qty: qty, price: Number(itemPrice) });
     }
+    
     updateCartUI();
     qtyInput.value = 1; 
 }
@@ -115,33 +118,37 @@ function updateCartUI() {
     const floatingBtn = document.getElementById('floating-cart');
     const floatingQty = document.getElementById('floating-qty');
     const list = document.getElementById('cart-items-list');
-    const totalQtyDisplay = document.getElementById('total-qty-display');
     const totalPriceDisplay = document.getElementById('total-price-display');
 
-    const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
-    const totalPrice = cart.reduce((sum, item) => sum + (item.qty * item.price), 0);
+    let totalGumballs = 0;
+    let grandTotal = 0;
 
     if (cart.length > 0) {
         overview.classList.remove('hidden');
         floatingBtn.classList.remove('hidden'); 
-        floatingQty.innerText = totalGumballs;
-        totalQtyDisplay.innerText = totalGumballs;
-        totalPriceDisplay.innerText = "$" + totalPrice.toFixed(2);
-        
         list.innerHTML = "";
+
         cart.forEach(item => {
+            // FIX: Math is done inside the loop correctly
+            const itemTotal = item.qty * item.price;
+            totalGumballs += item.qty;
+            grandTotal += itemTotal;
+
             const itemColor = item.name.includes('Double') ? 'text-pink-500' : 'text-yellow-600';
-            const itemTotal = (item.qty * item.price).toFixed(2);
+            
             list.innerHTML += `
                 <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <div>
                         <p class="font-black text-slate-800 uppercase text-xs">${item.name}</p>
                         <p class="font-bold ${itemColor} text-lg">x${item.qty}</p>
                     </div>
-                    <span class="font-black text-slate-900">$${itemTotal}</span>
+                    <span class="font-black text-slate-900">$${itemTotal.toFixed(2)}</span>
                 </div>
             `;
         });
+
+        floatingQty.innerText = totalGumballs;
+        totalPriceDisplay.innerText = "$" + grandTotal.toFixed(2);
     } else {
         overview.classList.add('hidden');
         floatingBtn.classList.add('hidden');
@@ -160,27 +167,31 @@ function clearCart() {
 }
 
 function sendFinalEmail() {
-    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-    const totalPrice = cart.reduce((sum, item) => sum + (item.qty * item.price), 0).toFixed(2);
-    
+    let totalCount = 0;
+    let grandTotal = 0;
     let summary = "New Pre-order Details:%0D%0A";
+
     cart.forEach(item => {
-        summary += "• " + item.qty + " x " + item.name + " ($" + (item.qty * item.price).toFixed(2) + ")%0D%0A";
+        const itemTotal = item.qty * item.price;
+        totalCount += item.qty;
+        grandTotal += itemTotal;
+        summary += "• " + item.qty + " x " + item.name + " ($" + itemTotal.toFixed(2) + ")%0D%0A";
     });
-    
+
+    const finalPrice = grandTotal.toFixed(2);
     summary += "%0D%0A--------------------------";
-    summary += "%0D%0ATOTAL DUE: $" + totalPrice;
+    summary += "%0D%0ATOTAL DUE: $" + finalPrice;
     summary += "%0D%0APAYMENT: Cash on Delivery"; 
     summary += "%0D%0A--------------------------";
-    summary += "%0D%0APlease include your Name below:%0D%0A";
+    summary += "%0D%0APlease include your Name and Delivery Details below:%0D%0A";
 
     const mainEmail = "kevinthekingofcats@gmail.com";
-    const secondEmail = "elias.hirani@student.tdsb.on.ca"; // <-- PUT THE SECOND EMAIL HERE
-    const subject = "Pre-order for " + totalCount + " Gumballs ($" + totalPrice + ")";
+    const secondEmail = "SECOND_EMAIL@example.com"; // <-- PUT SECOND EMAIL HERE
+    const subject = "Pre-order for " + totalCount + " Gumballs ($" + finalPrice + ")";
     
-    // This line tells the computer to send to both people
     window.location.href = "mailto:" + mainEmail + "?cc=" + secondEmail + "&subject=" + encodeURIComponent(subject) + "&body=" + summary;
 }
+</script>
 
 </body>
 </html>
