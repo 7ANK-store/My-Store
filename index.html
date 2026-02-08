@@ -5,17 +5,15 @@
     <title>Elias's Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50">
-
-    <nav class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-50">
+<body class="bg-slate-50 pb-20"> <nav class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-50">
         <h1 class="text-2xl font-bold text-blue-600 uppercase">⚡ Elias's Store</h1>
-        <button id="cart-btn" onclick="openCart()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-black uppercase tracking-tight shadow-md hover:bg-blue-700 transition">
+        <button id="cart-btn" onclick="scrollToCart()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-black uppercase tracking-tight shadow-md hover:bg-blue-700 transition">
             Cart (0)
         </button>
     </nav>
 
     <div class="max-w-4xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col h-full">
                 <div class="h-48 md:h-64 flex items-center justify-center mb-6">
@@ -58,7 +56,28 @@
                     Add to Cart
                 </button>
             </div>
+        </div>
 
+        <div id="cart-overview" class="hidden max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-50">
+            <h2 class="text-2xl font-black text-slate-800 uppercase italic mb-6 text-center">🛒 Order Overview</h2>
+            
+            <div id="cart-items-list" class="space-y-4 mb-8">
+                </div>
+
+            <div class="border-t-2 border-dashed pt-4 mb-8">
+                <div class="flex justify-between items-center text-xl font-black text-slate-900 uppercase">
+                    <span>Total Items:</span>
+                    <span id="total-qty-display">0</span>
+                </div>
+            </div>
+
+            <button onclick="openCart()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-xl">
+                Pre-order Now
+            </button>
+            
+            <button onclick="clearCart()" class="w-full mt-4 text-slate-400 font-bold uppercase text-xs tracking-widest hover:text-red-500">
+                Clear Cart
+            </button>
         </div>
     </div>
 
@@ -79,20 +98,49 @@ function addToCart(name, inputId) {
     }
     
     updateCartUI();
-    alert(qty + " " + name + " added to cart!");
-    qtyInput.value = 1; // Resets box to 1 after adding
+    qtyInput.value = 1; 
 }
 
 function updateCartUI() {
     const totalGumballs = cart.reduce((sum, item) => sum + item.qty, 0);
     document.getElementById('cart-btn').innerText = "Cart (" + totalGumballs + ")";
+    
+    const overview = document.getElementById('cart-overview');
+    const list = document.getElementById('cart-items-list');
+    const totalDisplay = document.getElementById('total-qty-display');
+
+    if (cart.length > 0) {
+        overview.classList.remove('hidden');
+        totalDisplay.innerText = totalGumballs;
+        list.innerHTML = ""; // Clear current list
+
+        cart.forEach(item => {
+            const itemColor = item.name.includes('Double') ? 'text-pink-500' : 'text-yellow-600';
+            list.innerHTML += `
+                <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <span class="font-black text-slate-800 uppercase text-sm">${item.name}</span>
+                    <span class="font-black ${itemColor} text-lg">x${item.qty}</span>
+                </div>
+            `;
+        });
+    } else {
+        overview.classList.add('hidden');
+    }
+}
+
+function scrollToCart() {
+    document.getElementById('cart-overview').scrollIntoView({ behavior: 'smooth' });
+}
+
+function clearCart() {
+    if(confirm("Empty your cart?")) {
+        cart = [];
+        updateCartUI();
+    }
 }
 
 function openCart() {
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
+    if (cart.length === 0) return;
 
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
     let summary = "New Pre-order Details:%0D%0A";
@@ -103,9 +151,7 @@ function openCart() {
     const email = "kevinthekingofcats@gmail.com";
     const subject = "Pre-order for " + totalCount + " Gumballs";
     
-    if(confirm("Ready to send your pre-order for " + totalCount + " total gumballs?")) {
-        window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + summary;
-    }
+    window.location.href = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + summary;
 }
 </script>
 
